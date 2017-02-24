@@ -1,1 +1,3 @@
 # iperf_visualization
+このプログラムは、iperfを可視化するためのプログラムです。
+iperfを用いて2点間で測定した帯域値をgnuplotで可視化します。
