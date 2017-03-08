@@ -19,8 +19,8 @@ var (
 
 
 func main() {
-	data_read("test")
-	ploter()
+	fmt.Print(filename)
+	//data_read(filename)
 }
 
 func data_read(filename string) {
@@ -40,7 +40,7 @@ func data_read(filename string) {
         }
 }
 
-func ploter(){
+func plot(){
 	rand.Seed(int64(0))
 
 	p, err := plot.New()
@@ -71,5 +71,6 @@ func point(n int) plotter.XYs {
 		pts[i].X = float64(i)
 		pts[i].Y = float64(i * i)
 	}
+
 	return pts
 }
