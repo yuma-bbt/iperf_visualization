@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"flag"
 	"math/rand"
 	"bufio"
@@ -33,7 +34,9 @@ func data_read(filename string) {
                 defer fp.Close()
         reader := bufio.NewReaderSize(fp, 4096)
         for line := ""; err == nil; line, err = reader.ReadString('\n'){
-                fmt.Print(line)
+                //fmt.Print(line)
+		var debug1 = strings.Split(line,",")
+		fmt.Println(debug1[1])
         }
         if err != io.EOF {
                 panic(err)
