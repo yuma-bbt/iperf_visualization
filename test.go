@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	"strings"
 )
+func main(){
 
-
-func main() {
-    fmt.Println(strings.Contains("abcdefg", "cde"))
-    fmt.Println(strings.Contains("abcdefg", "hij"))
+	var s []int
+	for  i:=0;  i<2000; i++{
+		s =append(s,i)
+		fmt.Println(s[i])
+	}
 }
 

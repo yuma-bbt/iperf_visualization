@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"strings"
+	_"strings"
+	_"reflect"
 	"flag"
 	"math/rand"
 	"bufio"
@@ -21,22 +22,29 @@ var (
 
 func main() {
 	data_read("test")
-	ploter()
+	//ploter()
 }
 
 func data_read(filename string) {
+
         var fp *os.File
         var err error
         fp, err  = os.Open(filename)
+	var data []string
+	var i int
+	i=0
+	//var hoge = []string{}
+
+
         if err != nil{
                 panic(err)
                 }
                 defer fp.Close()
         reader := bufio.NewReaderSize(fp, 4096)
-        for line := ""; err == nil; line, err = reader.ReadString('\n'){
-                //fmt.Print(line)
-		var debug1 = strings.Split(line,",")
-		fmt.Println(debug1[1])
+        for line := ""; err == nil; line, err = reader.ReadString('\n') {
+		data =append(data,line)
+		fmt.Print(data[i])
+		i++
         }
         if err != io.EOF {
                 panic(err)
@@ -55,7 +63,7 @@ func ploter(){
 	p.X.Label.Text = "Time(hour)"
 	p.Y.Label.Text = "Bandwidth(Mbps)"
 
-	if err := plotutil.AddLinePoints(p, "テスト", point(5)); err != nil {
+	if err := plotutil.AddLinePoints(p, "test", point(5)); err != nil {
 		panic(err)
 	}
 
