@@ -2,61 +2,54 @@ package main
 
 import (
 	"fmt"
-	"strings"
-	_"reflect"
-	"flag"
-	"math/rand"
-	"bufio"
-	"io"
 	"os"
+	"bufio"
+	"strings"
+	"io"
+	"math/rand"
 	"github.com/gonum/plot"
 	"github.com/gonum/plot/plotter"
 	"github.com/gonum/plot/plotutil"
 	"github.com/gonum/plot/vg"
 )
 
-var (
-       filename = flag.String("f","test","specify the data file" )
-)
+func main(){
 
-
-func main() {
-	data_read("test")
-	//ploter()
-}
-
-func data_read(filename string) {
-
-        var fp *os.File
-        var err error
-        fp, err  = os.Open(filename)
-	var data []string
 	var splited []string
+	var time []string
+	var bandwidth []string
 	var i int
 	i=0
-	//var hoge = []string{}
 
 
-        if err != nil{
-                panic(err)
-                }
-                defer fp.Close()
-        reader := bufio.NewReaderSize(fp, 4096)
-        for line := ""; err == nil; line, err = reader.ReadString('\n') {
-		data = append(data,line)
-		splited = strings.Split(data[i],"\t")
-		//fmt.Print(data[i])
-		fmt.Println(splited)
-		//fmt.Println(splited[-1])
+	fp, err := os.Open("test")
+	if(err != nil){
+		panic(err)
+	}
+
+	defer fp.Close()
+
+	reader := bufio.NewReaderSize(fp, 4096)
+	for {
+		line, _, err := reader.ReadLine()
+		if err == io.EOF {
+			break
+		}
+
+		splited = strings.Split(string(line),",")
+		time = append (time,splited[0])
+		bandwidth = append(bandwidth,splited[1])
+		fmt.Print(time[i])
+		fmt.Print(":")
+		fmt.Println(bandwidth[i])
 		i++
-        }
-        if err != io.EOF {
-                panic(err)
-        }
+
+	}
+	ploter(time,bandwidth)
+
 }
 
-func ploter(){
-	rand.Seed(int64(0))
+func ploter(time string[], bandwidth string[]){
 
 	p, err := plot.New()
 	if err != nil {
@@ -67,24 +60,31 @@ func ploter(){
 	p.X.Label.Text = "Time(hour)"
 	p.Y.Label.Text = "Bandwidth(Mbps)"
 
-	if err := plotutil.AddLinePoints(p, "test", point(5)); err != nil {
-		panic(err)
-	}
-
-	if err := p.Save(5*vg.Inch, 5*vg.Inch, "graf.png"); err != nil {
-		panic(err)
-	}
+	plotutil.AddLinePoints(p, "",plotter.XYs{time,bandwidth})
+	width :=4.0
+	height :=4.0
+	p.Save(width, height, "line_sample.png")
 }
 
 
-
-func point(n int) plotter.XYs {
-
-	pts := make(plotter.XYs, n)
-
-	for i := 0; i < 5; i++ {
-		pts[i].X = float64(i)
-		pts[i].Y = float64(i * i)
-	}
-	return pts
-}
+//	if err := plotutil.AddLinePoints(p, "test", point(len(time)); err != nil {
+//		panic(err)
+//	}
+//
+//	if err := p.Save(5*vg.Inch, 5*vg.Inch, "graf.png"); err != nil {
+//		panic(err)
+//	}
+//}
+//
+//
+//func point(time , bandwidth ,n int) plotter.XYs {
+//
+//	pts := make(plotter.XYs, n)
+//	data_length = len(time)
+//
+//	for i := 0; i < data_length; i++ {
+//		pts[i].X = int(time[i])
+//		pts[i].Y = int(bandwidth[i])
+//	}
+//	return pts
+//}
